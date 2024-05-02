@@ -1,7 +1,6 @@
 #include "PanningCamera.h"
 
 #include <cmath>
-
 #include <glm/gtx/transform.hpp>
 
 #include "utility/Math.h"
@@ -32,7 +31,7 @@ void PanningCamera::update(const Window& window, float dt, bool controls_enabled
 
             pitch -= PITCH_SPEED * (float) window.get_mouse_delta(GLFW_MOUSE_BUTTON_RIGHT).y;
             yaw -= YAW_SPEED * (float) window.get_mouse_delta(GLFW_MOUSE_BUTTON_RIGHT).x;
-            distance -= ZOOM_SCROLL_MULTIPLIER * ZOOM_SPEED * window.get_scroll_delta();
+            distance -= ZOOM_SCROLL_MULTIPLIER * ZOOM_SPEED * window.get_scroll_delta(); //z
 
             auto is_dragging = window.is_mouse_pressed(GLFW_MOUSE_BUTTON_RIGHT) || window.is_mouse_pressed(GLFW_MOUSE_BUTTON_MIDDLE);
             if (is_dragging) {
@@ -45,8 +44,13 @@ void PanningCamera::update(const Window& window, float dt, bool controls_enabled
     pitch = clamp(pitch, PITCH_MIN, PITCH_MAX);
     distance = clamp(distance, MIN_DISTANCE, MAX_DISTANCE);
 
-    view_matrix = glm::translate(glm::vec3{0.0f, 0.0f, -distance});
-    inverse_view_matrix = glm::inverse(view_matrix);
+    view_matrix = glm::translate(glm::vec3{0.0f,0.0f,-distance});
+
+    // rotate
+    view_matrix = glm::rotate(view_matrix, pitch, glm::vec3{1.0f, 0.0f, 0.0f});
+    view_matrix = glm::rotate(view_matrix, yaw, glm::vec3{0.0f, 1.0f, 0.0f});
+
+    view_matrix = glm::translate(view_matrix,focus_point);
 
     projection_matrix = glm::infinitePerspective(fov, window.get_framebuffer_aspect_ratio(), 1.0f);
     inverse_projection_matrix = glm::inverse(projection_matrix);
