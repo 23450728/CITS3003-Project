@@ -94,7 +94,10 @@ void EditorScene::LocalTransformComponent::add_local_transform_imgui_edit_sectio
 }
 
 glm::mat4 EditorScene::LocalTransformComponent::calc_model_matrix() const {
-    return glm::translate(position) * glm::scale(scale);
+    //glm::mat4 myMatrix = glm::rotate(glm::mat4(), euler_rotation.x, glm::vec3{1.0f, 0.0f, 0.0f});
+    //myMatrix = glm::rotate(glm::mat4(), euler_rotation.y, glm::vec3{0.0f, 1.0f, 0.0f});
+    //myMatrix = glm::rotate(glm::mat4(), euler_rotation.z, glm::vec3{0.0f, 0.0f, 1.0f});
+    return glm::translate(position) * glm::rotate(euler_rotation.x, glm::vec3{1.0f,0.0f,0.0f}) * glm::rotate(euler_rotation.y, glm::vec3{0.0f,1.0f,0.0f}) *  glm::rotate(euler_rotation.z, glm::vec3{0.0f,0.0f,1.0f}) *  glm::scale(scale);
 }
 
 void EditorScene::LocalTransformComponent::update_local_transform_from_json(const json& json) {
@@ -147,7 +150,7 @@ void EditorScene::EmissiveMaterialComponent::add_emissive_material_imgui_edit_se
     bool material_changed = false;
     ImGui::Text("Emissive Material");
 
-    // Add UI controls here
+
 
     ImGui::Spacing();
     if (material_changed) {
