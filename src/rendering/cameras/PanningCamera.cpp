@@ -51,7 +51,7 @@ void PanningCamera::update(const Window& window, float dt, bool controls_enabled
     view_matrix = glm::rotate(view_matrix, yaw, glm::vec3{0.0f, 1.0f, 0.0f});
 
     view_matrix = glm::translate(view_matrix,focus_point);
-
+    glEnable(GL_DEPTH_CLAMP); //Change for part C
     projection_matrix = glm::infinitePerspective(fov, window.get_framebuffer_aspect_ratio(), 1.0f);
     inverse_projection_matrix = glm::inverse(projection_matrix);
 }
