@@ -94,9 +94,6 @@ void EditorScene::LocalTransformComponent::add_local_transform_imgui_edit_sectio
 }
 
 glm::mat4 EditorScene::LocalTransformComponent::calc_model_matrix() const {
-    //glm::mat4 myMatrix = glm::rotate(glm::mat4(), euler_rotation.x, glm::vec3{1.0f, 0.0f, 0.0f});
-    //myMatrix = glm::rotate(glm::mat4(), euler_rotation.y, glm::vec3{0.0f, 1.0f, 0.0f});
-    //myMatrix = glm::rotate(glm::mat4(), euler_rotation.z, glm::vec3{0.0f, 0.0f, 1.0f});
     return glm::translate(position) * glm::rotate(euler_rotation.x, glm::vec3{1.0f,0.0f,0.0f}) * glm::rotate(euler_rotation.y, glm::vec3{0.0f,1.0f,0.0f}) *  glm::rotate(euler_rotation.z, glm::vec3{0.0f,0.0f,1.0f}) *  glm::scale(scale);
 }
 
@@ -115,12 +112,29 @@ json EditorScene::LocalTransformComponent::local_transform_into_json() const {
     }};
 }
 
-void EditorScene::LitMaterialComponent::add_material_imgui_edit_section(MasterRenderScene& /*render_scene*/, const SceneContext& /*scene_context*/) {
+void EditorScene::LitMaterialComponent::add_material_imgui_edit_section(MasterRenderScene& /*render_scene*/, const SceneContext& scene_context) {
     // Set this to true if the user has changed any of the material values, otherwise the changes won't be propagated
     bool material_changed = false;
     ImGui::Text("Material");
-
     // Add UI controls here
+    material_changed |= ImGui::ColorEdit3("diffuse tint", &material.diffuse_tint[0]);
+    ImGui::Spacing();
+    material_changed |= ImGui::DragFloat("diffuse intensity", &material.diffuse_tint.a, 0.01f, 0.0f, FLT_MAX);
+    ImGui::DragDisableCursor(scene_context.window);
+
+    material_changed |= ImGui::ColorEdit3("specular tint", &material.specular_tint[0]);
+    ImGui::Spacing();
+    material_changed |= ImGui::DragFloat("Specular Intensity", &material.specular_tint.a, 0.01f, 0.0f, FLT_MAX);
+    ImGui::DragDisableCursor(scene_context.window);
+
+    material_changed |= ImGui::ColorEdit3("ambient tint", &material.ambient_tint[0]);
+    ImGui::Spacing();
+    material_changed |= ImGui::DragFloat("Ambient Intensity", &material.ambient_tint.a, 0.01f, 0.0f, FLT_MAX);
+    ImGui::DragDisableCursor(scene_context.window);
+
+    ImGui::Spacing();
+    material_changed |= ImGui::DragFloat("Shininess", &material.shininess, 0.01f, 0.0f, 100.0f);
+    ImGui::DragDisableCursor(scene_context.window);
 
     ImGui::Spacing();
     if (material_changed) {
@@ -145,12 +159,15 @@ json EditorScene::LitMaterialComponent::material_into_json() const {
     }};
 }
 
-void EditorScene::EmissiveMaterialComponent::add_emissive_material_imgui_edit_section(MasterRenderScene& /*render_scene*/, const SceneContext& /*scene_context*/) {
+void EditorScene::EmissiveMaterialComponent::add_emissive_material_imgui_edit_section(MasterRenderScene& /*render_scene*/, const SceneContext& scene_context) {
     // Set this to true if the user has changed any of the material values, otherwise the changes won't be propagated
     bool material_changed = false;
     ImGui::Text("Emissive Material");
 
-
+    material_changed |= ImGui::ColorEdit3("emission tint", &material.emission_tint[0]);
+    ImGui::Spacing();
+    //material_changed |= ImGui::DragFloat("emission intensity", &material.emission_tint.a);
+    //ImGui::DragDisableCursor(scene_context.window);
 
     ImGui::Spacing();
     if (material_changed) {
