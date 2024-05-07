@@ -94,7 +94,10 @@ void EditorScene::LocalTransformComponent::add_local_transform_imgui_edit_sectio
 }
 
 glm::mat4 EditorScene::LocalTransformComponent::calc_model_matrix() const {
-    return glm::translate(position) * glm::rotate(euler_rotation.x, glm::vec3{1.0f,0.0f,0.0f}) * glm::rotate(euler_rotation.y, glm::vec3{0.0f,1.0f,0.0f}) *  glm::rotate(euler_rotation.z, glm::vec3{0.0f,0.0f,1.0f}) *  glm::scale(scale);
+    return glm::translate(position) * glm::rotate(euler_rotation.x,
+                glm::vec3{1.0f,0.0f,0.0f}) * glm::rotate(euler_rotation.y,
+                glm::vec3{0.0f,1.0f,0.0f}) *  glm::rotate(euler_rotation.z,
+                                                          glm::vec3{0.0f,0.0f,1.0f}) *  glm::scale(scale);
 }
 
 void EditorScene::LocalTransformComponent::update_local_transform_from_json(const json& json) {
@@ -133,7 +136,7 @@ void EditorScene::LitMaterialComponent::add_material_imgui_edit_section(MasterRe
     ImGui::DragDisableCursor(scene_context.window);
 
     ImGui::Spacing();
-    material_changed |= ImGui::DragFloat("Shininess", &material.shininess, 0.01f, 0.0f, 100.0f);
+    material_changed |= ImGui::DragFloat("Shininess", &material.shininess, 0.01f, 0.0f, FLT_MAX);
     ImGui::DragDisableCursor(scene_context.window);
 
     ImGui::Spacing();
