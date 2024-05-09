@@ -47,7 +47,7 @@ void PanningCamera::update(const Window& window, float dt, bool controls_enabled
     view_matrix = glm::translate(glm::vec3{0.0f,0.0f,-distance});
 
     // rotate
-    view_matrix = glm::rotate(view_matrix, pitch, glm::vec3{1.0f, 0.0f, 0.0f});
+    view_matrix = glm::rotate(view_matrix, -pitch, glm::vec3{1.0f, 0.0f, 0.0f});
     view_matrix = glm::rotate(view_matrix, yaw, glm::vec3{0.0f, 1.0f, 0.0f});
 
     view_matrix = glm::translate(view_matrix,focus_point);
