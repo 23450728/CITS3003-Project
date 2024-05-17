@@ -69,6 +69,8 @@ void EditorScene::PointLightElement::add_imgui_edit_section(MasterRenderScene& r
     ImGui::Spacing();
     ImGui::DragFloat("Intensity", &light->colour.a, 0.01f, 0.0f, FLT_MAX);
     ImGui::DragDisableCursor(scene_context.window);
+    bool strobe;
+    transformUpdated |= ImGui::Checkbox("Strobe", &strobe);
 
     ImGui::Spacing();
     ImGui::Text("Visuals");
@@ -76,8 +78,21 @@ void EditorScene::PointLightElement::add_imgui_edit_section(MasterRenderScene& r
     transformUpdated |= ImGui::Checkbox("Show Visuals", &visible);
     transformUpdated |= ImGui::DragFloat("Visual Scale", &visual_scale, 0.01f, 0.0f, FLT_MAX);
     ImGui::DragDisableCursor(scene_context.window);
-
     if (transformUpdated) {
+        if (strobe) {
+            strobe = false;
+            if (light->colour[0] != 0 && light->colour[1] != 0 && light->colour[2] != 0) {
+                light->colour[0] = 0;
+                light->colour[1] = 0;
+                light->colour[2] = 0;
+            }
+            else {
+                light->colour[0] = 1;
+                light->colour[1] = 1;
+                light->colour[2] = 1;
+            }
+        }
+
         update_instance_data();
     }
 }
