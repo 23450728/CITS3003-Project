@@ -139,10 +139,6 @@ void EditorScene::LitMaterialComponent::add_material_imgui_edit_section(MasterRe
     material_changed |= ImGui::DragFloat("Shininess", &material.shininess, 0.01f, 0.0f, FLT_MAX);
     ImGui::DragDisableCursor(scene_context.window);
 
-    //change
-    material_changed |= ImGui::DragFloat("Texture Scale", &material.texture_scale, 0.01f, 0.0f, FLT_MAX);
-    ImGui::DragDisableCursor(scene_context.window);
-
     ImGui::Spacing();
     if (material_changed) {
         update_instance_data();
@@ -155,9 +151,6 @@ void EditorScene::LitMaterialComponent::update_material_from_json(const json& js
     material.specular_tint = m["specular_tint"];
     material.ambient_tint = m["ambient_tint"];
     material.shininess = m["shininess"];
-    //change
-    material.texture_scale = m["texture_scale"];
-
 }
 
 json EditorScene::LitMaterialComponent::material_into_json() const {
@@ -166,8 +159,6 @@ json EditorScene::LitMaterialComponent::material_into_json() const {
         {"specular_tint", material.specular_tint},
         {"ambient_tint", material.ambient_tint},
         {"shininess", material.shininess},
-        //change
-        {"texture_scale", material.texture_scale},
     }};
 }
 
