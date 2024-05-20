@@ -36,7 +36,7 @@ void main() {
     LightingResult lighting_result = total_light_calculation(light_calculation_data, frag_in.material
     #if NUM_PL > 0
     ,point_lights
-    #endif,
+    #endif
     #if NUM_DL > 0
     ,directional_lights
     #endif

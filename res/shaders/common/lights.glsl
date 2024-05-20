@@ -2,6 +2,10 @@
 #define NUM_PL 0
 #endif
 
+#ifndef NUM_DL
+#define NUM_DL 0
+#endif
+
 // Material Properties
 struct Material {
     vec3 diffuse_tint;
@@ -22,7 +26,7 @@ struct PointLightData {
     vec3 colour;
 };
 
-struct DierctionalLightData{
+struct DirectionalLightData{
     vec3 colour;
     vec3 direction;
 
@@ -65,18 +69,18 @@ void directional_light_calculation(DirectionalLightData directional_light, Light
     mat4 yawMatrix = rotationMatrixY(directional_light.direction[1]);
     vec3 adjusted_direction = ( pitchMatrix * yawMatrix * vec4(0.0, 0.0, -1.0, 0.0)).xyz;
     // Ambient 
-    vec3 ambient_component = ambient_factor * directional_light.colour 
+    vec3 ambient_component = ambient_factor * directional_light.colour; 
 
     // Diffuse
     //change
     vec3 ws_light_dir = normalize(-adjusted_direction);
     float diffuse_factor = max(dot(ws_light_dir, calculation_data.ws_normal), 0.0f);
-    vec3 diffuse_component = diffuse_factor * directional_light.colour 
+    vec3 diffuse_component = diffuse_factor * directional_light.colour;
 
     // Specular
     vec3 ws_halfway_dir = normalize(ws_light_dir + calculation_data.ws_view_dir);
     float specular_factor = pow(max(dot(calculation_data.ws_normal, ws_halfway_dir), 0.0f), shininess);
-    vec3 specular_component = specular_factor * directional_light.colour 
+    vec3 specular_component = specular_factor * directional_light.colour;
 
     total_diffuse += diffuse_component ;
     total_specular += specular_component;
@@ -122,9 +126,9 @@ struct LightingResult {
 LightingResult total_light_calculation(LightCalculatioData light_calculation_data, Material material
         #if NUM_PL > 0
         ,PointLightData point_lights[NUM_PL]
-        #endif,
+        #endif
         #if NUM_DL > 0
-        ,PointLightData point_lights[NUM_DL]
+        ,DirectionalLightData directional_lights[NUM_DL]
         #endif
     ) {
 
@@ -142,7 +146,7 @@ LightingResult total_light_calculation(LightCalculatioData light_calculation_dat
 
     #if NUM_DL > 0
     for (int i = 0; i < NUM_DL; i++) {
-        point_light_calculation(directional_lights_lights[i], light_calculation_data, material.shininess, total_diffuse, total_specular, total_ambient);
+        directional_light_calculation(directional_lights[i], light_calculation_data, material.shininess, total_diffuse, total_specular, total_ambient);
     }
     #endif
 
