@@ -54,8 +54,6 @@ void main() {
     // Transform vertices
     vec3 ws_position = (model_matrix * vec4(vertex_position, 1.0f)).xyz;
     vec3 ws_normal = normalize(normal_matrix * normal);
-    vec3 ws_view_dir = normalize(ws_view_position - ws_position);
-    vertex_out.ws_view_dir = ws_view_dir;
     vertex_out.texture_coordinate = texture_coordinate;
     vertex_out.ws_position = ws_position;
     vertex_out.ws_normal = ws_normal;
