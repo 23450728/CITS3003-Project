@@ -59,8 +59,6 @@ void main() {
     vertex_out.texture_coordinate = texture_coordinate;
     vertex_out.ws_position = ws_position;
     vertex_out.ws_normal = ws_normal;
-    vec3 ws_view_dir = normalize(ws_view_position - ws_position);
-    vertex_out.ws_view_dir = ws_view_dir;
 
     gl_Position = projection_view_matrix * vec4(ws_position, 1.0f);
 
