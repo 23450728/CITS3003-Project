@@ -25,7 +25,6 @@ uniform vec3 diffuse_tint;
 uniform vec3 specular_tint;
 uniform vec3 ambient_tint;
 uniform float shininess;
-uniform float texture_scale;
 
 // Animation Data
 uniform mat4 bone_transforms[BONE_TRANSFORMS];
@@ -55,7 +54,7 @@ void main() {
     // Transform vertices
     vec3 ws_position = (model_matrix * vec4(vertex_position, 1.0f)).xyz;
     vec3 ws_normal = normalize(normal_matrix * normal);
-    vertex_out.texture_coordinate = texture_coordinate*texture_scale;
+    vertex_out.texture_coordinate = texture_coordinate;
     vertex_out.ws_position = ws_position;
     vertex_out.ws_normal = ws_normal;
 
@@ -63,8 +62,4 @@ void main() {
 
     Material material = Material(diffuse_tint, specular_tint, ambient_tint, shininess);
     vertex_out.material = material;
-
-
-    vec3 ws_view_dir = normalize(ws_view_position - ws_position);
-    vertex_out.ws_view_dir = ws_view_dir;
 }
