@@ -37,11 +37,6 @@ public:
 
     bool remove_light(const std::shared_ptr<PointLight>& point_light);
 
-
-    void insert_directional_light(std::shared_ptr<DirectionalLight> directional_light);
-
-    bool remove_directional_light(const std::shared_ptr<DirectionalLight>& directional_light);
-
     /// Propagates a camera state to all the render scenes
     void use_camera(const CameraInterface& camera_interface);
 
