@@ -23,12 +23,22 @@ layout (std140) uniform PointLightArray {
 };
 #endif
 
+#if NUM_DL > 0
+layout (std140) uniform DirectionalLightArray {
+    DirectionalLightData directional_lights[NUM_DL];
+};
+#endif
+
+
 
 void main() {
     LightCalculatioData light_calculation_data = LightCalculatioData(frag_in.ws_position, frag_in.ws_view_dir, frag_in.ws_normal);
     LightingResult lighting_result = total_light_calculation(light_calculation_data, frag_in.material
     #if NUM_PL > 0
     ,point_lights
+    #endif,
+    #if NUM_DL > 0
+    ,directional_lights
     #endif
     );
     // Resolve the per vertex lighting with per fragment texture sampling.

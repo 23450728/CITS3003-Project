@@ -36,6 +36,7 @@ std::unique_ptr<EditorScene::DirectionalLightElement> EditorScene::DirectionalLi
 std::unique_ptr<EditorScene::DirectionalLightElement> EditorScene::DirectionalLightElement::from_json(const SceneContext& scene_context, EditorScene::ElementRef parent, const json& j) {
     auto light_element = new_default(scene_context, parent);
 
+    light_element->direction = j["direction"];
     light_element->position = j["position"];
     light_element->light->colour = j["colour"];
     light_element->visible = j["visible"];
@@ -47,6 +48,7 @@ std::unique_ptr<EditorScene::DirectionalLightElement> EditorScene::DirectionalLi
 
 json EditorScene::DirectionalLightElement::into_json() const {
     return {
+        {"direction",     direction},
         {"position",     position},
         {"colour",       light->colour},
         {"visible",      visible},
@@ -60,11 +62,11 @@ void EditorScene::DirectionalLightElement::add_imgui_edit_section(MasterRenderSc
 
     ImGui::Text("Local Transformation");
     bool transformUpdated = false;
-    transformUpdated |= ImGui::DragFloat3("Translation", &position[0], 0.01f);
+    transformUpdated |= ImGui::DragFloat3("Translation", &direction[0], 0.01f);
     ImGui::DragDisableCursor(scene_context.window);
-    transformUpdated |= ImGui::SliderFloat("Pitch", &position[0],  -89.99f, 89.99f);
+    transformUpdated |= ImGui::SliderFloat("Pitch", &direction[0],  -89.99f, 89.99f);
     ImGui::DragDisableCursor(scene_context.window);
-    transformUpdated |= ImGui::DragFloat("Yaw", &position[0], 0.01f);
+    transformUpdated |= ImGui::DragFloat("Yaw", &direction[1], 0.01f);
     ImGui::DragDisableCursor(scene_context.window);
     ImGui::Spacing();
 

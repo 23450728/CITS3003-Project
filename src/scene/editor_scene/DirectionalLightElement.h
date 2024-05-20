@@ -12,6 +12,7 @@ namespace EditorScene {
         static constexpr const char* ELEMENT_TYPE_NAME = "Directional Light";
 
         // Local transformation
+        glm::vec3 direction;
         glm::vec3 position;
         bool visible = true;
         float visual_scale = 1.0f;
@@ -19,8 +20,8 @@ namespace EditorScene {
         std::shared_ptr<DirectionalLight> light;
         std::shared_ptr<EmissiveEntityRenderer::Entity> light_sphere;
 
-        DirectionalLightElement(const ElementRef& parent, std::string name, glm::vec3 position, std::shared_ptr<DirectionalLight> light, std::shared_ptr<EmissiveEntityRenderer::Entity> light_sphere) :
-            SceneElement(parent, std::move(name)), position(position), light(std::move(light)), light_sphere(std::move(light_sphere)) {}
+        DirectionalLightElement(const ElementRef& parent, std::string name, glm::vec3 direction, glm::vec3 position,std::shared_ptr<DirectionalLight> light, std::shared_ptr<EmissiveEntityRenderer::Entity> light_sphere) :
+            SceneElement(parent, std::move(name)), direction(direction),position(position), light(std::move(light)), light_sphere(std::move(light_sphere)) {}
 
         static std::unique_ptr<DirectionalLightElement> new_default(const SceneContext& scene_context, ElementRef parent);
         static std::unique_ptr<DirectionalLightElement> from_json(const SceneContext& scene_context, ElementRef parent, const json& j);

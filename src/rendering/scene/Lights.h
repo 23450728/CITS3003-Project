@@ -39,17 +39,18 @@ struct PointLight {
 struct DirectionalLight {
     DirectionalLight() = default;
 
-    DirectionalLight(const glm::vec3& position, const glm::vec4& colour) :
-        position(position), colour(colour) {}
+    DirectionalLight(const glm::vec3& direction, const glm::vec4& colour) :
+        direction(direction), colour(colour) {}
 
     static DirectionalLight off() {
         return {glm::vec3{}, glm::vec4{}};
     }
 
-    static std::shared_ptr<DirectionalLight> create(const glm::vec3& position, const glm::vec4& colour) {
-        return std::make_shared<DirectionalLight>(position, colour);
+    static std::shared_ptr<DirectionalLight> create(const glm::vec3& direction, const glm::vec4& colour) {
+        return std::make_shared<DirectionalLight>(direction, colour);
     }
 
+    glm::vec3 direction{};
     glm::vec3 position{};
     // Alpha components are just used to store a scalar that is applied before passing to the GPU
     glm::vec4 colour{};
@@ -58,6 +59,7 @@ struct DirectionalLight {
     // alignas used to conform to std140 for direct binary usage with glsl
     struct Data {
         alignas(16) glm::vec3 position;
+        alignas(16) glm::vec3 direction;
         alignas(16) glm::vec3 colour;
     };
 };
